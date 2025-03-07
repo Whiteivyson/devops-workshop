@@ -5,7 +5,7 @@ provider "aws" {
 
 resource "aws_instance" "demo_server" {
   ami             = "ami-04b4f1a9cf54c11d0"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.small"
   key_name        = "ddp"
   vpc_security_group_ids = [aws_security_group.demo_sg.id]
   subnet_id = aws_subnet.dpp-public-subnet-01.id
@@ -26,6 +26,13 @@ resource "aws_security_group" "demo_sg" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allows SSH from anywhere (Change for security)
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allows Jenkins from anywhere (Change for security)
   }
 
   # Outbound Rules
